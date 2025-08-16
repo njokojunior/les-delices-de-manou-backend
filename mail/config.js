@@ -1,30 +1,39 @@
 const Nodemailer = require("nodemailer");
-const { MailtrapTransport } = require("mailtrap");
 const dotenv = require("dotenv");
+dotenv.config({ path: "../.env" });
 
+module.exports = async function sendEmailToAdmin(
+  senderName,
+  senderEmail,
+  subject,
+  message
+) {
+  try {
+    const transport = Nodemailer.createTransport({
+      host: process.env.HOST,
+      port: Number(process.env.HOST_PORT),
+      secure: false,
+      auth: {
+        user: "api",
+        pass: process.env.TOKEN,
+      },
+    });
 
-dotenv.config();
-const transport = Nodemailer.createTransport(
-  MailtrapTransport({
-    token: process.env.TOKEN,
-    testInboxId: 3630499,
-  })
-);
+    await transport
+      .verify()
+      .then(() => console.log("✅ SMTP server is ready to take messages"))
+      .catch((err) => console.error("❌ SMTP connection failed:", err));
 
-const sender = {
-  address: process.env.SENDER_ADDRESS ,
-  name: process.env.SENDER_ADDRESS_NAME,
+    let info = await transport.sendMail({
+      from: `"${senderName}" <hello@demomailtrap.co>`,
+      replyTo: senderEmail,
+      to: process.env.RECIPIENT,
+      subject,
+      text: message,
+    });
+
+    console.log("Email sent:", info.messageId);
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
 };
-const recipients = [process.env.RECIPIENT];
-
-transport
-  .sendMail({
-    from: sender,
-    to: recipients,
-    subject: "You are awesome!",
-    text: "Congrats for sending test email with Mailtrap!",
-    category: "Integration Test",
-    sandbox: true,
-  })
-  .then(console.log, console.error);
-// TOKEN : dad1d83b7554246065e884fdc151e0aa
