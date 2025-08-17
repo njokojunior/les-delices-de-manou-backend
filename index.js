@@ -1,4 +1,7 @@
-const dotenv = require("dotenv");
+if (process.env.NODE_ENV !== "production") {
+  const dotenv = require("dotenv");
+  dotenv.config({ path: "../.env" });
+}
 const express = require("express");
 
 const sendEmailToAdmin = require("./mail/config.js");
@@ -6,9 +9,8 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-
-dotenv.config();
 
 app.get("/", (req, res) => {
   res.writeHead(200, "success");
@@ -39,6 +41,6 @@ app.post("/message", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT, "127.0.0.1", () => {
+app.listen(process.env.PORT || 3000, "127.0.0.1", () => {
   console.log(`Listening on port ${process.env.PORT}`);
 });
