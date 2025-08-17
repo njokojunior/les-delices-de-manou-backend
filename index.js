@@ -13,12 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.writeHead(200, "success");
-  return res.end("Successful");
+  return res.send("Successful");
 });
 
 app.post("/message", async (req, res) => {
-  console.log(req.body);
   try {
     if (!req.body) {
       return res.status(400).json({ message: "No data provided" });
