@@ -1,17 +1,12 @@
 const Nodemailer = require("nodemailer");
 
-// if(process.env.NODE_ENV !== "production") {   
-//   const dotenv = require("dotenv");
-//   dotenv.config({ path: "../.env" });
 
-// }
-
-module.exports = async function sendEmailToAdmin(
+const sendEmailToAdmin = async (
   senderName,
   senderEmail,
   subject,
   message
-) {
+) => {
   try {
     const transport = Nodemailer.createTransport({
       host: process.env.HOST,
@@ -35,9 +30,33 @@ module.exports = async function sendEmailToAdmin(
       subject,
       text: message,
     });
-
-    console.log("Email sent:", info.messageId);
+    console.log("Message sent: %s", info.messageId);
   } catch (error) {
     console.error("Error sending email:", error);
   }
 };
+
+const sendToNewsLetter = async (email) => {
+  try {
+    const transport = Nodemailer.createTransport({
+      host: process.env.HOST,
+      port: Number(process.env.HOST_PORT),
+      secure: false,
+      auth: { 
+        user: "api",    
+        pass: process.env.TOKEN,
+      },
+    });
+     let info = await transport.sendMail({
+       from: `"NewsLetter" <hello@demomailtrap.co>`,
+       replyTo: email,
+       to: process.env.RECIPIENT,
+       subject: 'Newsletter Subscription',
+       text: `Thank you for subscribing to our newsletter with the email: ${email}`,
+     });
+  }
+  catch (error) {
+    console.error("Error sending newsletter email:", error);
+  }
+};  
+module.exports = {sendEmailToAdmin, sendToNewsLetter};
