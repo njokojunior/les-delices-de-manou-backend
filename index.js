@@ -39,6 +39,6 @@ app.post("/message", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 3000, "127.0.0.1", () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port ${process.env.PORT}`);
 });
