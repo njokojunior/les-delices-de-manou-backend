@@ -4,14 +4,18 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express");
 
-const {sendEmailToAdmin} = require("./mail/config.js");
+const { sendEmailToAdmin } = require("./mail/config.js");
 const { sendToNewsLetter } = require("./mail/config.js");
 const cors = require("cors");
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://les-delices-de-manou-frontend.vercel.app/",
+  })
+);
 
 app.get("/", (req, res) => {
   return res.send("Successful");
@@ -48,15 +52,19 @@ app.post("/newsletter", async (req, res) => {
     const { email } = req.body;
     const emailResponse = await sendToNewsLetter(email);
     if (emailResponse instanceof Error) {
-      return res.status(500).json({ message: "Failed to send newsletter email" });
+      return res
+        .status(500)
+        .json({ message: "Failed to send newsletter email" });
     }
-    return res.status(200).json({ message: "Newsletter email sent successfully" });
+    return res
+      .status(200)
+      .json({ message: "Newsletter email sent successfully" });
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-app.listen(process.env.PORT || 3000,"0.0.0.0", () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port ${process.env.PORT}`);
 });
