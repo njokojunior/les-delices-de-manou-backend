@@ -1,11 +1,6 @@
 {
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo \"Error: no build specified\" && exit 1",
-    "lint": "echo \"Error: no lint specified\" && exit 1",
-    "format": "echo \"Error: no format specified\" && exit 1",
-    "prestart": "cross-env NODE_ENV=production node index.js",
     "prod": "cross-env NODE_ENV=production node index.js",
     "start": "cross-env NODE_ENV=production node index.js"
   },
