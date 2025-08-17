@@ -1,10 +1,18 @@
 {
   "scripts": {
-    "start": "nodemon index.js"
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo \"Error: no build specified\" && exit 1",
+    "lint": "echo \"Error: no lint specified\" && exit 1",
+    "format": "echo \"Error: no format specified\" && exit 1",
+    "prestart": "cross-env NODE_ENV=production node index.js",
+    "prod": "cross-env NODE_ENV=production node index.js",
+    "start": "cross-env NODE_ENV=production node index.js"
   },
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^10.0.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "mailtrap": "^4.2.0",
