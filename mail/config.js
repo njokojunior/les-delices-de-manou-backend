@@ -1,10 +1,10 @@
 const Nodemailer = require("nodemailer");
 
-// if(process.env.NODE_ENV !== "production") {   
-//   const dotenv = require("dotenv");
-//   dotenv.config({ path: "../.env" });
+if(process.env.NODE_ENV !== "production") {   
+  const dotenv = require("dotenv");
+  dotenv.config({ path: "../.env" });
 
-// }
+}
 
 module.exports = async function sendEmailToAdmin(
   senderName,
